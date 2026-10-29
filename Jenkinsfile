@@ -57,17 +57,18 @@ pipeline {
             steps {
                 echo 'Deploying application...'
                 sh '''
-                    docker compose down || true
-                    MYSQL_PASSWORD=$MYSQL_PASSWORD \
-                    FLASK_SECRET_KEY=$FLASK_SECRET_KEY \
-                    MYSQL_USER=$MYSQL_USER \
-                    MYSQL_DATABASE=$MYSQL_DATABASE \
-                    MYSQL_HOST=mysql \
-                    MYSQL_PORT=3306 \
-                    docker compose up -d
-                '''
-            }
-        }
+            docker compose down --remove-orphans || true
+            docker rm -f taskmanager-mysql taskmanager-flask || true
+            MYSQL_PASSWORD=$MYSQL_PASSWORD \
+            FLASK_SECRET_KEY=$FLASK_SECRET_KEY \
+            MYSQL_USER=$MYSQL_USER \
+            MYSQL_DATABASE=$MYSQL_DATABASE \
+            MYSQL_HOST=mysql \
+            MYSQL_PORT=3306 \
+            docker compose up -d
+        '''
+    }
+}
 
         stage('Verify') {
             steps {
