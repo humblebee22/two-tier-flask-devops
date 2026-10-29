@@ -74,11 +74,13 @@ pipeline {
             steps {
                 echo 'Verifying deployment...'
                 sh '''
-                    sleep 15
-                    curl -f http://localhost:5000/health || exit 1
-                '''
-            }
-        }
+            sleep 15
+            FLASK_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' taskmanager-flask)
+            echo "Flask container IP: $FLASK_IP"
+            curl -f http://$FLASK_IP:5000/health || exit 1
+        '''
+    }
+}
     }
 
     post {
