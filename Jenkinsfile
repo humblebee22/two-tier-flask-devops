@@ -4,9 +4,19 @@ pipeline {
     environment {
         MYSQL_PASSWORD = credentials('mysql-password')
         FLASK_SECRET_KEY = credentials('flask-secret-key')
+        MYSQL_USER = credentials('mysql-user')
+        MYSQL_DATABASE = credentials('mysql-database')
+        MYSQL_HOST = 'jenkins-mysql'
+        MYSQL_PORT = '3306'
     }
 
     stages {
+        stage('Fix Docker Socket') {
+            steps {
+                sh 'sudo chmod 666 /var/run/docker.sock'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 echo 'Checking out source code...'
@@ -50,8 +60,8 @@ pipeline {
                     docker compose down || true
                     MYSQL_PASSWORD=$MYSQL_PASSWORD \
                     FLASK_SECRET_KEY=$FLASK_SECRET_KEY \
-                    MYSQL_USER=root \
-                    MYSQL_DATABASE=taskdb \
+                    MYSQL_USER=$MYSQL_USER \
+                    MYSQL_DATABASE=$MYSQL_DATABASE \
                     MYSQL_HOST=mysql \
                     MYSQL_PORT=3306 \
                     docker compose up -d
