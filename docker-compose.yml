@@ -1,3 +1,4 @@
+name: taskmanager
 services:
   mysql:
     image: mysql:8.0
