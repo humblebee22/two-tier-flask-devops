@@ -1,4 +1,5 @@
 # Two-tier Flask DevOps Project
+#too many comments
 from app import create_app
 from app.config import Config
 
