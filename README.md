@@ -313,7 +313,4 @@ Full learning documentation and error reference available in the `docs/` folder:
 
 ---
 
-## Author
 
-Kartik Goswami — B.Tech Final Year, ADGIPS Delhi  
-GitHub: [@humblebee22](https://github.com/humblebee22)
